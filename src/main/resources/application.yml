@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: hyodore-backend
+
+mqtt:
+  url: tcp://localhost:1883
+  client-id: spring-outbound-client
+  default-topic: cmd/device123

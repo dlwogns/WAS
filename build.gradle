@@ -29,6 +29,11 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // Spring Integration
+    implementation 'org.springframework.boot:spring-boot-starter-integration'
+    // Spring MQTT
+    implementation "org.springframework.integration:spring-integration-mqtt:6.4.3"
 }
 
 tasks.named('test') {
