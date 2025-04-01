@@ -16,6 +16,7 @@ public class MqttPublisherService {
     public void publish(String topic, String payload) {
         Message<String> message = MessageBuilder.withPayload(payload)
                 .setHeader(MqttHeaders.TOPIC, topic)
+                .setHeader(MqttHeaders.QOS, 0)
                 .build();
         mqttOutboundChannel.send(message);
     }
