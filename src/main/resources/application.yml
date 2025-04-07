@@ -1,8 +1,25 @@
 spring:
   application:
     name: hyodore-backend
+  kafka:
+    bootstrap-servers: localhost:9092
+
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+    consumer:
+      group-id: device-event-group
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      auto-offset-reset: earliest
+
+    listener:
+      missing-topics-fatal: false  # 토픽이 없더라도 앱이 안 죽게
 
 mqtt:
   url: tcp://localhost:1883
   client-id: spring-outbound-client
   default-topic: cmd/device123
+
+
