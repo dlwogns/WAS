@@ -2,6 +2,7 @@ spring:
   application:
     name: hyodore-backend
   kafka:
+    #bootstrap-servers: 3.90.53.92:9092
     bootstrap-servers: localhost:9092
 
     producer:
@@ -17,7 +18,19 @@ spring:
     listener:
       missing-topics-fatal: false  # 토픽이 없더라도 앱이 안 죽게
 
+  cloud:
+    aws:
+      region:
+        static: us-east-1
+      s3:
+        bucket: inha-capstone-01-shared-gallery
+  data:
+    redis:
+      port: 6379
+      host: localhost
+
 mqtt:
+  #url: tcp://3.90.53.92:1883
   url: tcp://localhost:1883
   client-id: spring-outbound-client
   default-topic: cmd/device123
