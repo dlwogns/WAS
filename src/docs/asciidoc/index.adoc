@@ -1,0 +1,10 @@
+= Hyodore API 문서
+:toc: left
+:toclevels: 2
+
+== 공유갤러리 Presigned URL 발급
+
+include::{snippets}/gallery-upload-init/http-request.adoc[]
+include::{snippets}/gallery-upload-init/request-fields.adoc[]
+include::{snippets}/gallery-upload-init/http-response.adoc[]
+include::{snippets}/gallery-upload-init/response-fields.adoc[]
