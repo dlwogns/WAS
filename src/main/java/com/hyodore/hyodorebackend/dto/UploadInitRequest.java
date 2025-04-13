@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class UploadInitRequest {
-    private String fileName;
-    private String contentType;
+
+  private String fileName;
+  private String contentType;
 }

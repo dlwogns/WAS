@@ -59,18 +59,13 @@ public class S3PresignedUrlService {
     if (contentType == null) {
       return "jpg";
     }
-    switch (contentType) {
-      case "image/jpeg":
-        return "jpg";
-      case "image/png":
-        return "png";
-      case "image/gif":
-        return "gif";
-      case "image/webp":
-        return "webp";
-      default:
-        return "jpg";
-    }
+    return switch (contentType) {
+      case "image/jpeg" -> "jpg";
+      case "image/png" -> "png";
+      case "image/gif" -> "gif";
+      case "image/webp" -> "webp";
+      default -> "jpg";
+    };
   }
 
 }
