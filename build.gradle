@@ -36,7 +36,19 @@ dependencies {
     implementation "org.springframework.integration:spring-integration-mqtt:6.4.3"
     // Spring kafka
     implementation 'org.springframework.kafka:spring-kafka'
+
+    // Spring Redis
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
+
+    //guava
+    implementation "com.google.guava:guava:33.3.0-jre"
+    implementation platform("io.awspring.cloud:spring-cloud-aws-dependencies:3.3.0")
+    // Replace the following with the starter dependencies of specific modules you wish to use
+    implementation 'io.awspring.cloud:spring-cloud-aws-starter'
+    implementation 'io.awspring.cloud:spring-cloud-aws-starter-s3'
 }
+
 
 tasks.named('test') {
     useJUnitPlatform()
