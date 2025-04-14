@@ -1,6 +1,20 @@
 spring:
   application:
     name: hyodore-backend
+  datasource:
+    url: jdbc:mysql://database-1.czwmu86ms4yl.us-east-1.rds.amazonaws.com:3306/inha-capstone-01?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: ${MYSQL_USERNAME}
+    password: ${MYSQL_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update # or validate / create / create-drop
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: true
+
   kafka:
     #bootstrap-servers: 3.90.53.92:9092
     bootstrap-servers: localhost:9092
