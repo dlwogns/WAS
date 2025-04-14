@@ -31,21 +31,27 @@ class GalleryUploadDocsTest {
     mockMvc.perform(post("/api/gallery/upload/init")
             .contentType(MediaType.APPLICATION_JSON)
             .content("""
-                    {
-                      "file_name": "cat.jpg",
-                      "content_type": "image/jpeg"
-                    }
+                    [
+                      {
+                        "fileName": "family1.jpg",
+                        "contentType": "image/jpeg"
+                      },
+                      {
+                        "fileName": "pic2.png",
+                        "contentType": "image/png"
+                      }
+                    ]
                 """))
         .andExpect(status().isOk())
         .andDo(document("gallery-upload-init",
             requestFields(
-                fieldWithPath("file_name").description("업로드할 파일 이름"),
-                fieldWithPath("content_type").description("파일 MIME 타입")
+                fieldWithPath("[].fileName").description("파일 이름"),
+                fieldWithPath("[].contentType").description("MIME 타입")
             ),
             responseFields(
-                fieldWithPath("photoId").description("파일 UUID"),
-                fieldWithPath("uploadUrl").description("S3 업로드용 Presigned URL"),
-                fieldWithPath("photoUrl").description("S3 정적 URL")
+                fieldWithPath("[].photoId").description("사진 UUID"),
+                fieldWithPath("[].uploadUrl").description("S3 Presigned PUT URL"),
+                fieldWithPath("[].photoUrl").description("정적 URL")
             )
         ));
   }

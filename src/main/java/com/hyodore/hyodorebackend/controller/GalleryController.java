@@ -7,6 +7,7 @@ import com.hyodore.hyodorebackend.dto.UploadCompleteRequest;
 import com.hyodore.hyodorebackend.dto.UploadInitRequest;
 import com.hyodore.hyodorebackend.service.S3PresignedUrlService;
 import com.hyodore.hyodorebackend.service.SyncQueueService;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
@@ -26,13 +27,14 @@ public class GalleryController {
   private final SyncQueueService syncQueueService;
 
   @PostMapping("/upload/init")
-  public ResponseEntity<PresignedUrlResponse> initUpload(
-      @RequestBody UploadInitRequest uploadInitRequest
+  public ResponseEntity<List<PresignedUrlResponse>> initUpload(
+      @RequestBody List<UploadInitRequest> requests
   ) {
-    PresignedUrlResponse response = s3PresignedUrlService.generatePresignedUploadURL(
-        uploadInitRequest.getFileName(),
-        uploadInitRequest.getContentType());
-    return ResponseEntity.ok(response);
+    List<PresignedUrlResponse> responses = requests.stream()
+        .map(req -> s3PresignedUrlService.generatePresignedUploadURL(
+            req.getFileName(), req.getContentType()))
+        .toList();
+    return ResponseEntity.ok(responses);
   }
 
   @PostMapping("/upload/complete")
