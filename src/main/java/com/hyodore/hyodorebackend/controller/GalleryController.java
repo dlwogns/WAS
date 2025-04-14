@@ -1,12 +1,19 @@
 package com.hyodore.hyodorebackend.controller;
 
+import com.hyodore.hyodorebackend.dto.PhotoInfo;
 import com.hyodore.hyodorebackend.dto.PresignedUrlResponse;
 import com.hyodore.hyodorebackend.dto.SyncQueueMessage;
 import com.hyodore.hyodorebackend.dto.SyncResult;
 import com.hyodore.hyodorebackend.dto.UploadCompleteRequest;
 import com.hyodore.hyodorebackend.dto.UploadInitRequest;
+import com.hyodore.hyodorebackend.dto.UploadResult;
+import com.hyodore.hyodorebackend.entity.Photo;
+import com.hyodore.hyodorebackend.service.PhotoService;
 import com.hyodore.hyodorebackend.service.S3PresignedUrlService;
+import com.hyodore.hyodorebackend.service.SyncLogService;
 import com.hyodore.hyodorebackend.service.SyncQueueService;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -25,6 +32,8 @@ public class GalleryController {
 
   private final S3PresignedUrlService s3PresignedUrlService;
   private final SyncQueueService syncQueueService;
+  private final PhotoService photoService;
+  private final SyncLogService syncLogService;
 
   @PostMapping("/upload/init")
   public ResponseEntity<List<PresignedUrlResponse>> initUpload(
@@ -39,23 +48,48 @@ public class GalleryController {
 
   @PostMapping("/upload/complete")
   public ResponseEntity<SyncResult> completeUpload(
-      @RequestBody UploadCompleteRequest request
+      @RequestBody UploadCompleteRequest requests
   ) throws Exception {
-    String requestId = UUID.randomUUID().toString();
-    CompletableFuture<SyncResult> future = new CompletableFuture<>();
+    String userId = requests.getUserId();
 
-    syncQueueService.waitForResult(requestId, future);
+    LocalDateTime lastSyncedAt = syncLogService.findLastSyncedAtByUserId(userId);
 
-    SyncQueueMessage message = new SyncQueueMessage(
-        "upload",
-        request.getPhotoId(),
-        request.getUserId(),
-        "123",
-        requestId
-    );
+    List<CompletableFuture<UploadResult>> futures = new ArrayList<>(); // 결과값 기다리기
+    List<SyncQueueMessage> messages = new ArrayList<>(); // Queue에 넣을 message
 
-    syncQueueService.enqueueSyncRequest(message);
-    SyncResult result = future.get(5, TimeUnit.SECONDS);
-    return ResponseEntity.ok(result);
+    for (PhotoInfo photoInfo : requests.getPhotos()) {
+      String requestId = UUID.randomUUID().toString();
+      CompletableFuture<UploadResult> future = new CompletableFuture<>();
+
+      syncQueueService.waitForResult(requestId, future);
+
+      SyncQueueMessage message = new SyncQueueMessage(
+          "upload",
+          photoInfo.getPhotoId(),
+          photoInfo.getPhotoUrl(),
+          userId,
+          "123",
+          requestId
+      );
+
+      messages.add(message);
+      futures.add(future);
+    }
+    for (SyncQueueMessage message : messages) {
+      syncQueueService.enqueueSyncRequest(message);
+    }
+
+    List<UploadResult> uploadResults = new ArrayList<>();
+    for (CompletableFuture<UploadResult> future : futures) {
+      uploadResults.add(future.get(5, TimeUnit.SECONDS));
+    }
+
+    List<Photo> newPhotos = photoService.findNewPhotosSince(userId, lastSyncedAt);
+    List<Photo> deletedPhotos = photoService.findDeletedPhotosSince(userId, lastSyncedAt);
+
+    LocalDateTime now = LocalDateTime.now();
+    syncLogService.saveSyncLog(userId, now);
+
+    return ResponseEntity.ok(new SyncResult(now.toString(), newPhotos, deletedPhotos));
   }
 }

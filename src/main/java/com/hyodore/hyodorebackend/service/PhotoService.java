@@ -23,4 +23,17 @@ public class PhotoService {
     String familyId = userService.getFamilyIdByUserId(userId);
     return photoRepository.findByFamilyIdAndDeletedTrueAndDeletedAtAfter(familyId, since);
   }
+
+  public void saveUploadedPhoto(String photoId, String userId, String familyId, String photoUrl) {
+    Photo photo = Photo.builder()
+        .photoId(photoId)
+        .uploadedBy(userId)
+        .familyId(familyId)
+        .photoUrl(photoUrl)
+        .uploadedAt(LocalDateTime.now())
+        .deleted(false)
+        .build();
+
+    photoRepository.save(photo);
+  }
 }
