@@ -8,3 +8,12 @@ include::{snippets}/gallery-upload-init/http-request.adoc[]
 include::{snippets}/gallery-upload-init/request-fields.adoc[]
 include::{snippets}/gallery-upload-init/http-response.adoc[]
 include::{snippets}/gallery-upload-init/response-fields.adoc[]
+
+== 업로드 완료
+
+=== /api/gallery/upload/complete
+
+include::{snippets}/gallery-upload-complete/http-request.adoc[]
+include::{snippets}/gallery-upload-complete/request-fields.adoc[]
+include::{snippets}/gallery-upload-complete/http-response.adoc[]
+include::{snippets}/gallery-upload-complete/response-fields.adoc[]
