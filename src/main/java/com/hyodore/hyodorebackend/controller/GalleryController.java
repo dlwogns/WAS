@@ -1,5 +1,6 @@
 package com.hyodore.hyodorebackend.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hyodore.hyodorebackend.dto.PhotoInfo;
 import com.hyodore.hyodorebackend.dto.PresignedUrlResponse;
 import com.hyodore.hyodorebackend.dto.SyncQueueMessage;
@@ -8,6 +9,7 @@ import com.hyodore.hyodorebackend.dto.UploadCompleteRequest;
 import com.hyodore.hyodorebackend.dto.UploadInitRequest;
 import com.hyodore.hyodorebackend.dto.UploadResult;
 import com.hyodore.hyodorebackend.entity.Photo;
+import com.hyodore.hyodorebackend.service.MqttPublisherService;
 import com.hyodore.hyodorebackend.service.PhotoService;
 import com.hyodore.hyodorebackend.service.S3PresignedUrlService;
 import com.hyodore.hyodorebackend.service.SyncLogService;
@@ -34,6 +36,8 @@ public class GalleryController {
   private final SyncQueueService syncQueueService;
   private final PhotoService photoService;
   private final SyncLogService syncLogService;
+  private final MqttPublisherService mqttPublisherService;
+  private final ObjectMapper objectMapper;
 
   @PostMapping("/upload/init")
   public ResponseEntity<List<PresignedUrlResponse>> initUpload(
@@ -90,6 +94,10 @@ public class GalleryController {
     LocalDateTime now = LocalDateTime.now();
     syncLogService.saveSyncLog(userId, now);
 
-    return ResponseEntity.ok(new SyncResult(now.toString(), newPhotos, deletedPhotos));
+    SyncResult ret = new SyncResult(now.toString(), newPhotos, deletedPhotos);
+
+    mqttPublisherService.publish("gallery",objectMapper.writeValueAsString(ret) );
+
+    return ResponseEntity.ok(ret);
   }
 }
