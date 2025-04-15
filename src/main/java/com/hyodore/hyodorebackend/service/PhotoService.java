@@ -2,6 +2,7 @@ package com.hyodore.hyodorebackend.service;
 
 import com.hyodore.hyodorebackend.entity.Photo;
 import com.hyodore.hyodorebackend.repository.PhotoRepository;
+import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -35,5 +36,16 @@ public class PhotoService {
         .build();
 
     photoRepository.save(photo);
+  }
+
+  @Transactional
+  public void softDeletePhotos(List<String> photoIds) {
+    List<Photo> photos = photoRepository.findAllById(photoIds);
+    for (Photo photo : photos) {
+      photo.setDeleted(true);
+      photo.setDeletedAt(LocalDateTime.now());
+    }
+
+    photoRepository.saveAll(photos);
   }
 }

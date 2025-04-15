@@ -1,6 +1,7 @@
 package com.hyodore.hyodorebackend.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hyodore.hyodorebackend.dto.DeleteRequest;
 import com.hyodore.hyodorebackend.dto.PhotoInfo;
 import com.hyodore.hyodorebackend.dto.PresignedUrlResponse;
 import com.hyodore.hyodorebackend.dto.SyncQueueMessage;
@@ -85,7 +86,7 @@ public class GalleryController {
 
     List<UploadResult> uploadResults = new ArrayList<>();
     for (CompletableFuture<UploadResult> future : futures) {
-      uploadResults.add(future.get(5, TimeUnit.SECONDS));
+      uploadResults.add(future.get(30, TimeUnit.SECONDS));
     }
 
     List<Photo> newPhotos = photoService.findNewPhotosSince(userId, lastSyncedAt);
@@ -96,8 +97,28 @@ public class GalleryController {
 
     SyncResult ret = new SyncResult(now.toString(), newPhotos, deletedPhotos);
 
-    mqttPublisherService.publish("gallery",objectMapper.writeValueAsString(ret) );
+    mqttPublisherService.publish("gallery", objectMapper.writeValueAsString(ret));
 
     return ResponseEntity.ok(ret);
+  }
+
+  @PostMapping("/delete")
+  public ResponseEntity<SyncResult> deletePhotos(
+      @RequestBody DeleteRequest request
+  ) {
+    String userId = request.getUserId();
+    List<String> photoIds = request.getPhotoIds();
+
+    photoService.softDeletePhotos(photoIds);
+
+    LocalDateTime lastSyncedAt = syncLogService.findLastSyncedAtByUserId(userId);
+
+    List<Photo> newPhotos = photoService.findNewPhotosSince(userId, lastSyncedAt);
+    List<Photo> deletedPhotos = photoService.findDeletedPhotosSince(userId, lastSyncedAt);
+
+    LocalDateTime now = LocalDateTime.now();
+    syncLogService.saveSyncLog(userId, now);
+
+    return ResponseEntity.ok(new SyncResult(now.toString(), newPhotos, deletedPhotos));
   }
 }
