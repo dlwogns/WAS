@@ -5,12 +5,12 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
-import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "photo")
@@ -36,10 +36,13 @@ public class Photo {
   @Column(name = "uploaded_at")
   private LocalDateTime uploadedAt;
 
+  @Setter
   @Column(name = "deleted")
   private boolean deleted;
 
+  @Setter
   @Column(name = "deleted_at")
   private LocalDateTime deletedAt;
+
 }
 
