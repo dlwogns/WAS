@@ -48,4 +48,10 @@ public class PhotoService {
 
     photoRepository.saveAll(photos);
   }
+
+  public List<Photo> findAllPhotos(String userId) {
+    String familyId = userService.getFamilyIdByUserId(userId);
+    return photoRepository.findByFamilyIdAndDeletedFalse(familyId);
+  }
+
 }

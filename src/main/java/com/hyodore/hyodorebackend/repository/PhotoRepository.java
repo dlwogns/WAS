@@ -14,4 +14,6 @@ public interface PhotoRepository extends JpaRepository<Photo, String> {
   List<Photo> findByFamilyIdAndDeletedTrueAndDeletedAtAfter(String familyId, LocalDateTime since);
 
   List<Photo> findByUploadedBy(String userId);
+
+  List<Photo> findByFamilyIdAndDeletedFalse(String familyId);
 }
