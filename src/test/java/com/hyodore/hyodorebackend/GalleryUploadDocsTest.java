@@ -1,5 +1,8 @@
 package com.hyodore.hyodorebackend;
 
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -151,5 +154,62 @@ class GalleryUploadDocsTest {
             )
         ));
   }
+
+  @Test
+  void 최근_동기화_기반_사진_변화_조회_문서화() throws Exception {
+    mockMvc.perform(get("/api/gallery/sync")
+            .param("userId", "user123")
+            .accept(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andDo(document("gallery-sync",queryParameters(
+            parameterWithName("userId").description("유저 ID")
+            ),
+            responseFields(
+                fieldWithPath("syncedAt").description("이번 동기화 시각 (서버 기준)"),
+                fieldWithPath("newPhoto").description("동기화 이후 추가된 사진 목록"),
+                fieldWithPath("newPhoto[].photoId").description("사진 ID"),
+                fieldWithPath("newPhoto[].familyId").description("가족 ID"),
+                fieldWithPath("newPhoto[].photoUrl").description("사진 S3 URL"),
+                fieldWithPath("newPhoto[].uploadedBy").description("업로드한 사용자 ID"),
+                fieldWithPath("newPhoto[].uploadedAt").description("업로드 시각"),
+                fieldWithPath("newPhoto[].deleted").description("삭제 여부"),
+                fieldWithPath("newPhoto[].deletedAt").description("삭제된 시각").optional(),
+
+                fieldWithPath("deletedPhoto").description("동기화 이후 삭제된 사진 목록"),
+                fieldWithPath("deletedPhoto[].photoId").description("사진 ID"),
+                fieldWithPath("deletedPhoto[].familyId").description("가족 ID"),
+                fieldWithPath("deletedPhoto[].photoUrl").description("사진 S3 URL"),
+                fieldWithPath("deletedPhoto[].uploadedBy").description("업로드한 사용자 ID"),
+                fieldWithPath("deletedPhoto[].uploadedAt").description("업로드 시각"),
+                fieldWithPath("deletedPhoto[].deleted").description("삭제 여부"),
+                fieldWithPath("deletedPhoto[].deletedAt").description("삭제된 시각").optional()
+            )
+        ));
+  }
+
+  @Test
+  void 전체_사진_조회_문서화() throws Exception {
+    mockMvc.perform(get("/api/gallery/all")
+            .param("userId", "user123")
+            .accept(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andDo(document("gallery-all",
+            queryParameters(
+                parameterWithName("userId").description("사용자 ID (가족 ID 기준으로 조회)")
+            ),
+            responseFields(
+                fieldWithPath("photos").description("현재 삭제되지 않은 전체 사진 목록"),
+                fieldWithPath("photos[].photoId").description("사진 ID"),
+                fieldWithPath("photos[].familyId").description("가족 ID"),
+                fieldWithPath("photos[].photoUrl").description("사진 S3 URL"),
+                fieldWithPath("photos[].uploadedBy").description("업로드한 사용자 ID"),
+                fieldWithPath("photos[].uploadedAt").description("업로드 시각"),
+                fieldWithPath("photos[].deleted").description("삭제 여부"),
+                fieldWithPath("photos[].deletedAt").description("삭제된 시각").optional()
+            )
+        ));
+  }
+
+
 
 }

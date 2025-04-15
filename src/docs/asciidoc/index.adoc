@@ -2,6 +2,7 @@
 :toc: left
 :toclevels: 2
 
+= 공유갤러리
 == 업로드
 
 === 공유갤러리 Presigned URL 발급
@@ -26,3 +27,17 @@ include::{snippets}/gallery-delete/http-request.adoc[]
 include::{snippets}/gallery-delete/request-fields.adoc[]
 include::{snippets}/gallery-delete/http-response.adoc[]
 include::{snippets}/gallery-delete/response-fields.adoc[]
+== 조회
+=== 유저별 동기화 /api/gallery/sync
+
+include::{snippets}/gallery-sync/http-request.adoc[]
+include::{snippets}/gallery-sync/query-parameters.adoc[]
+include::{snippets}/gallery-sync/http-response.adoc[]
+include::{snippets}/gallery-sync/response-fields.adoc[]
+
+=== 삭제사진 제외 전체 사진 조회 /api/gallery/all
+
+include::{snippets}/gallery-all/http-request.adoc[]
+include::{snippets}/gallery-all/query-parameters.adoc[]
+include::{snippets}/gallery-all/http-response.adoc[]
+include::{snippets}/gallery-all/response-fields.adoc[]

@@ -1,6 +1,7 @@
 package com.hyodore.hyodorebackend.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hyodore.hyodorebackend.dto.AllPhotosResponse;
 import com.hyodore.hyodorebackend.dto.DeleteRequest;
 import com.hyodore.hyodorebackend.dto.PhotoInfo;
 import com.hyodore.hyodorebackend.dto.PresignedUrlResponse;
@@ -23,9 +24,11 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -120,5 +123,24 @@ public class GalleryController {
     syncLogService.saveSyncLog(userId, now);
 
     return ResponseEntity.ok(new SyncResult(now.toString(), newPhotos, deletedPhotos));
+  }
+
+  @GetMapping("/sync")
+  public ResponseEntity<SyncResult> getChangedPhotos(@RequestParam String userId) {
+    LocalDateTime lastSyncedAt = syncLogService.findLastSyncedAtByUserId(userId);
+
+    List<Photo> newPhotos = photoService.findNewPhotosSince(userId, lastSyncedAt);
+    List<Photo> deletedPhotos = photoService.findDeletedPhotosSince(userId, lastSyncedAt);
+
+    LocalDateTime now = LocalDateTime.now();
+    syncLogService.saveSyncLog(userId, now);
+
+    return ResponseEntity.ok(new SyncResult(now.toString(), newPhotos, deletedPhotos));
+  }
+
+  @GetMapping("/all")
+  public ResponseEntity<AllPhotosResponse> getAllPhotos(@RequestParam String userId) {
+    List<Photo> photos = photoService.findAllPhotos(userId);
+    return ResponseEntity.ok(new AllPhotosResponse(photos));
   }
 }
