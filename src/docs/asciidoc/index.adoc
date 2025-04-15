@@ -2,18 +2,27 @@
 :toc: left
 :toclevels: 2
 
-== 공유갤러리 Presigned URL 발급
+== 업로드
+
+=== 공유갤러리 Presigned URL 발급
 
 include::{snippets}/gallery-upload-init/http-request.adoc[]
 include::{snippets}/gallery-upload-init/request-fields.adoc[]
 include::{snippets}/gallery-upload-init/http-response.adoc[]
 include::{snippets}/gallery-upload-init/response-fields.adoc[]
 
-== 업로드 완료
 
-=== /api/gallery/upload/complete
+=== 업로드 완료 /api/gallery/upload/complete
 
 include::{snippets}/gallery-upload-complete/http-request.adoc[]
 include::{snippets}/gallery-upload-complete/request-fields.adoc[]
 include::{snippets}/gallery-upload-complete/http-response.adoc[]
 include::{snippets}/gallery-upload-complete/response-fields.adoc[]
+
+== 삭제
+=== /api/gallery/delete
+
+include::{snippets}/gallery-delete/http-request.adoc[]
+include::{snippets}/gallery-delete/request-fields.adoc[]
+include::{snippets}/gallery-delete/http-response.adoc[]
+include::{snippets}/gallery-delete/response-fields.adoc[]
