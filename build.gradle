@@ -56,6 +56,9 @@ dependencies {
     implementation 'io.awspring.cloud:spring-cloud-aws-starter'
     implementation 'io.awspring.cloud:spring-cloud-aws-starter-s3'
 
+    //AOP
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
+
     // Test
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc:3.0.0'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
