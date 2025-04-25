@@ -2,40 +2,79 @@
 :toc: left
 :toclevels: 2
 
-= 공유갤러리
-== 업로드
+Server 기본 URL : http://107.21.85.186:8080
 
-=== 공유갤러리 Presigned URL 발급
+== 규칙
+
+Hyodore API는 RESTful 규칙을 최대한 따릅니다. 요청과 응답은 모두 `application/json` 형식입니다.
+
+=== JSON 규칙
+- 속성 이름은 `Camel Case`를 사용합니다.
+- 날짜 및 시간은 [ISO 8601](https://ko.wikipedia.org/wiki/ISO_8601) 형식의 문자열입니다. 예:
+  - 날짜: `2020-08-12`
+  - 일시: `2020-08-12T02:12:33.231Z`
+- 빈 문자열은 지원하지 않으며, 값 해제를 위해서는 `null`을 명시적으로 사용하세요.
+
+=== HTTP 상태 코드
+
+|===
+| 상태 | 설명
+
+| 200 | 성공적으로 처리된 요청
+| 400 | 잘못된 요청 (JSON 파싱 오류, 유효하지 않은 URL 등)
+| 401 | 인증 실패 (토큰 없음 또는 무효)
+| 404 | 요청 경로 없음
+| ERROR | 메세지큐 기반 처리 중 오류 발생 시 반환
+|===
+
+=== 오류 코드 상세
+
+|===
+| 코드 | 설명
+
+| `invalid_json` | The request body could not be decoded as JSON
+| `invalid_request_url` | This request URL is not valid.
+| `invalid_request` | This request is not supported.
+| `unauthorized` | The bearer token is not valid.
+|===
+
+== 공유갤러리
+
+=== 업로드
+
+==== 공유갤러리 Presigned URL 발급
 
 include::{snippets}/gallery-upload-init/http-request.adoc[]
 include::{snippets}/gallery-upload-init/request-fields.adoc[]
 include::{snippets}/gallery-upload-init/http-response.adoc[]
 include::{snippets}/gallery-upload-init/response-fields.adoc[]
 
-
-=== 업로드 완료 /api/gallery/upload/complete
+==== 업로드 완료 /api/gallery/upload/complete
 
 include::{snippets}/gallery-upload-complete/http-request.adoc[]
 include::{snippets}/gallery-upload-complete/request-fields.adoc[]
 include::{snippets}/gallery-upload-complete/http-response.adoc[]
 include::{snippets}/gallery-upload-complete/response-fields.adoc[]
 
-== 삭제
-=== /api/gallery/delete
+=== 삭제
+
+==== /api/gallery/delete
 
 include::{snippets}/gallery-delete/http-request.adoc[]
 include::{snippets}/gallery-delete/request-fields.adoc[]
 include::{snippets}/gallery-delete/http-response.adoc[]
 include::{snippets}/gallery-delete/response-fields.adoc[]
-== 조회
-=== 유저별 동기화 /api/gallery/sync
+
+=== 조회
+
+==== 유저별 동기화 /api/gallery/sync
 
 include::{snippets}/gallery-sync/http-request.adoc[]
 include::{snippets}/gallery-sync/query-parameters.adoc[]
 include::{snippets}/gallery-sync/http-response.adoc[]
 include::{snippets}/gallery-sync/response-fields.adoc[]
 
-=== 삭제사진 제외 전체 사진 조회 /api/gallery/all
+==== 삭제사진 제외 전체 사진 조회 /api/gallery/all
 
 include::{snippets}/gallery-all/http-request.adoc[]
 include::{snippets}/gallery-all/query-parameters.adoc[]
