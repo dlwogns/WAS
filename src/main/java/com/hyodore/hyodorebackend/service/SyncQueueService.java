@@ -33,7 +33,7 @@ public class SyncQueueService {
 
   public void enqueueSyncRequest(SyncQueueMessage message) {
     try {
-      String queueKey = "family:" + message.getFamilyId() + ":syncQueue";
+      String queueKey = "shared_gallery";
       String json = objectMapper.writeValueAsString(message);
       redisTemplate.opsForList().leftPush(queueKey, json);
     } catch (JsonProcessingException e) {

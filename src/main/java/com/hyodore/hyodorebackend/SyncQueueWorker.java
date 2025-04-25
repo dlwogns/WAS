@@ -29,10 +29,10 @@ public class SyncQueueWorker {
   public void runWorker() {
     Executors.newSingleThreadExecutor().submit(() -> {
       while (true) {
-        String familyId = "123"; // 실무에선 여러 가족 순회
+        String familyId = "123";
         //String queueKey = "family:" + familyId + ":syncQueue";
-        String queueKey = "family:123:syncQueue";
-        String processingKey = "family:" + familyId + ":processing";
+        String queueKey = "shared_gallery";
+        String processingKey = "shared_gallery:processing";
         String json = redisTemplate.execute(
             safePopScript,
             List.of(queueKey, processingKey),
@@ -46,8 +46,8 @@ public class SyncQueueWorker {
               msg.getPhotoUrl());
 
           syncQueueService.completeResult(msg.getRequestId(), new UploadResult(msg.getPhotoId()));
-        }
-        Thread.sleep(50); // 부하 조절
+        } 
+        Thread.sleep(10); // 부하 조절
       }
     });
   }
