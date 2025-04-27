@@ -6,8 +6,8 @@ BROKER = "127.0.0.1"    # 예: "127.0.0.1" or "mqtt.example.com"
 PORT = 1883
 TOPIC = "cmd/device123"
 CLIENT_ID = "python-subscriber-001"
-USERNAME = "your_username"   # Mosquitto에 설정한 사용자명
-PASSWORD = "your_password"   # 설정한 비밀번호
+USERNAME = "your_username"
+PASSWORD = "your_password"
 
 # 메시지 도착 시 콜백
 def on_message(client, userdata, msg):
