@@ -80,3 +80,15 @@ include::{snippets}/gallery-all/http-request.adoc[]
 include::{snippets}/gallery-all/query-parameters.adoc[]
 include::{snippets}/gallery-all/http-response.adoc[]
 include::{snippets}/gallery-all/response-fields.adoc[]
+
+== 일정 알림
+
+=== 업로드
+include::{snippets}/schedule-upload/http-request.adoc[]
+include::{snippets}/schedule-upload/request-fields.adoc[]
+include::{snippets}/schedule-upload/http-response.adoc[]
+
+=== 삭제
+include::{snippets}/schedule-delete/http-request.adoc[]
+include::{snippets}/schedule-delete/request-fields.adoc[]
+include::{snippets}/schedule-delete/http-response.adoc[]
