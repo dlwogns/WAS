@@ -1,5 +1,6 @@
 package com.hyodore.hyodorebackend.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hyodore.hyodorebackend.dto.AllPhotosResponse;
 import com.hyodore.hyodorebackend.dto.DeleteRequest;
@@ -108,7 +109,7 @@ public class GalleryController {
   @PostMapping("/delete")
   public ResponseEntity<SyncResult> deletePhotos(
       @RequestBody DeleteRequest request
-  ) {
+  ) throws JsonProcessingException {
     String userId = request.getUserId();
     List<String> photoIds = request.getPhotoIds();
 
@@ -122,7 +123,11 @@ public class GalleryController {
     LocalDateTime now = LocalDateTime.now();
     syncLogService.saveSyncLog(userId, now);
 
-    return ResponseEntity.ok(new SyncResult(now.toString(), newPhotos, deletedPhotos));
+    SyncResult ret = new SyncResult(now.toString(), newPhotos, deletedPhotos);
+
+    mqttPublisherService.publish("gallery", objectMapper.writeValueAsString(ret));
+
+    return ResponseEntity.ok(ret);
   }
 
   @GetMapping("/sync")
