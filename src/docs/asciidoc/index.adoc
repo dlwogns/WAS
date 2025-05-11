@@ -92,3 +92,8 @@ include::{snippets}/schedule-upload/http-response.adoc[]
 include::{snippets}/schedule-delete/http-request.adoc[]
 include::{snippets}/schedule-delete/request-fields.adoc[]
 include::{snippets}/schedule-delete/http-response.adoc[]
+
+== 이벤트 처리
+include::{snippets}/event/http-request.adoc[]
+include::{snippets}/event/request-fields.adoc[]
+include::{snippets}/event/http-response.adoc[]
