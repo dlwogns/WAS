@@ -8,4 +8,5 @@ public class ScheduleRequest {
   private String userId;
   private String scheduleDesc;
   private String scheduleDate;
+  private String type;
 }

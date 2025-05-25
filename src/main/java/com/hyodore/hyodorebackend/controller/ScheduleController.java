@@ -26,7 +26,8 @@ public class ScheduleController {
       @RequestBody ScheduleRequest request
   ) throws JsonProcessingException {
     scheduleService.saveSchedule(request);
-    mqttPublisherService.publish("schedule/upload", objectMapper.writeValueAsString(request));
+    request.setType("upload");
+    mqttPublisherService.publish("schedule", objectMapper.writeValueAsString(request));
     return ResponseEntity.ok("Schedule uploaded");
   }
 
@@ -35,7 +36,8 @@ public class ScheduleController {
       @RequestBody ScheduleRequest request
   ) throws JsonProcessingException {
     scheduleService.deleteSchedule(request);
-    mqttPublisherService.publish("schedule/delete", objectMapper.writeValueAsString(request));
+    request.setType("delete");
+    mqttPublisherService.publish("schedule", objectMapper.writeValueAsString(request));
     return ResponseEntity.ok("Schedule deleted");
   }
 }
