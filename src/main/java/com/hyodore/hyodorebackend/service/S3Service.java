@@ -1,24 +1,44 @@
 package com.hyodore.hyodorebackend.service;
 
 import com.hyodore.hyodorebackend.dto.PresignedUrlResponse;
+import java.io.IOException;
 import java.net.URL;
 import java.time.Duration;
 import java.util.UUID;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import software.amazon.awssdk.core.sync.RequestBody;
+import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignRequest;
 
 @Service
 @RequiredArgsConstructor
-public class S3PresignedUrlService {
+public class S3Service {
 
   private final S3Presigner s3Presigner;
+  private final S3Client s3Client;
 
   @Value("${spring.cloud.aws.s3.bucket}")
   private String bucket;
+
+  public String upload(MultipartFile file, String dirName) throws IOException {
+    String fileName = dirName + "/" + UUID.randomUUID() + "_" + file.getOriginalFilename();
+
+    PutObjectRequest putObjectRequest = PutObjectRequest.builder()
+        .bucket(bucket)
+        .key(fileName)
+        .contentType(file.getContentType())
+        .build();
+
+    s3Client.putObject(putObjectRequest, RequestBody.fromInputStream(file.getInputStream(), file.getSize()));
+
+    return s3Client.utilities().getUrl(builder -> builder.bucket(bucket).key(fileName)).toExternalForm();
+  }
 
   public PresignedUrlResponse generatePresignedUploadURL(String fileName, String contentType) {
     String extension = extractExtensionFromFileName(fileName);
