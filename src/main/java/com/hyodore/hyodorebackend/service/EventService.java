@@ -9,6 +9,7 @@ import com.hyodore.hyodorebackend.repository.DeviceRepository;
 import com.hyodore.hyodorebackend.repository.EventRepository;
 import com.hyodore.hyodorebackend.repository.EventTypeRepository;
 import java.time.LocalDateTime;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -39,7 +40,7 @@ public class EventService {
         .orElse("알 수 없는 이벤트");
 
     // FCM 전송
-    fcmService.sendNotification("이벤트 발생!", message);
+    fcmService.sendNotification("이벤트 발생!", message, Map.of("eventCode", dto.getEventCode()));
   }
 
   private String getFamilyIdByDeviceId(String deviceId) {

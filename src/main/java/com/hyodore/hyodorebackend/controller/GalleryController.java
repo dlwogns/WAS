@@ -14,7 +14,7 @@ import com.hyodore.hyodorebackend.dto.UploadResult;
 import com.hyodore.hyodorebackend.entity.Photo;
 import com.hyodore.hyodorebackend.service.MqttPublisherService;
 import com.hyodore.hyodorebackend.service.PhotoService;
-import com.hyodore.hyodorebackend.service.S3PresignedUrlService;
+import com.hyodore.hyodorebackend.service.S3Service;
 import com.hyodore.hyodorebackend.service.SyncLogService;
 import com.hyodore.hyodorebackend.service.SyncQueueService;
 import java.time.LocalDateTime;
@@ -37,7 +37,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/gallery")
 public class GalleryController {
 
-  private final S3PresignedUrlService s3PresignedUrlService;
+  private final S3Service s3Service;
   private final SyncQueueService syncQueueService;
   private final PhotoService photoService;
   private final SyncLogService syncLogService;
@@ -49,7 +49,7 @@ public class GalleryController {
       @RequestBody List<UploadInitRequest> requests
   ) {
     List<PresignedUrlResponse> responses = requests.stream()
-        .map(req -> s3PresignedUrlService.generatePresignedUploadURL(
+        .map(req -> s3Service.generatePresignedUploadURL(
             req.getFileName(), req.getContentType()))
         .toList();
     return ResponseEntity.ok(responses);
