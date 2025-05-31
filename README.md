@@ -13,14 +13,14 @@ Github for Version Control (Issue & PR)
 http://54.172.64.98:8080/docs/index.html
 
 # 시스템 아키텍쳐
-![img.png](img.png)
+![img.png](img/img.png)
 
 
 # 시퀸스 다이어그램
 
-![img_1.png](img_1.png)
-![img_2.png](img_2.png)
-![img_3.png](img_3.png)
+![img_1.png](img/img1.png)
+![img_2.png](img/img2.png)
+![img_3.png](img/img3.png)
 
 # 세부 기능 내용
 
