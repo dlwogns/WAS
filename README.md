@@ -1,4 +1,34 @@
-# 종설 백엔드 최종 정리
+![파란색 그라데이션 헤더 배너 (1)](https://github.com/user-attachments/assets/f7dad3f2-0266-404c-b106-de506ab6b73f)
+
+|앱 & 팀 이름|Hydor & 효도르 |
+|:--:|:--|
+|로고|<img width="70" alt="" src="https://github.com/user-attachments/assets/2a23f3a6-14d9-4fbb-8ce1-304a1c8b5032"> |
+|기간|2025. 03 ~ 2025. 06|
+|수상||
+|참여 인원|3명(iOS 개발 1명 + BE 1명 + AI/Embeded 1명)|
+|기술 스택|
+Oracle OpenJDK 17, Spring Boot 3.4.4
+
+Redis(for Queue), Mosquitto, AWS SDK, RDS for MySQL
+
+IntelliJ, DataGrip, Postman, RestDocs
+
+Github for Version Control (Issue & PR)|
+|아키텍처|MVC, Server-Client-Device|
+
+## 🔵 기획 의도
+- SKT,LG,KT,NAVER 등 대기업에서 혼자 사는 노부모를 위해 자사 기기를 이용한 AI 서비스를 제공하고 있습니다.
+- 하지만, 이러한 서비스는 국가 사업과 연관되어, 노부모들의 고독사 방지를 중점으로 운영합니다.
+- Hyodor는 단순 고독사 방지를 목적이 아닌 지속적인 가족 유대감을 형성하여 같이 있는 듯한 사용자 경험을 주기 위해 기획했습니다.
+- 이는 곧 현실적인 여건으로 같이 살지는 못하지만, 끈끈한 유대를 이어가고 싶은 가정에게 좋은 서비스를 제공한다고 생각합니다.
+
+## 🔵 팀원 소개
+|<img src="https://avatars.githubusercontent.com/u/84498457?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/61345151?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/48996852?v=4" width="150" height="150"/>|
+|:-:|:-:|:-:|
+|김상준(iOS,팀장)<br/>[@kimsangjunzzang](https://github.com/kimsangjunzzang)|이재훈(BE)<br/>[@dlwogns](https://github.com/dlwogns)|민창기(AI,Embeded)<br/>[@min000914](https://github.com/min000914)|
+
+
+## 🔵 종설 백엔드 최종 정리
 
 Oracle OpenJDK 17, Spring Boot 3.4.4
 
@@ -8,21 +38,21 @@ IntelliJ, DataGrip, Postman, RestDocs
 
 Github for Version Control (Issue & PR)
 
-## API Document
+## 🔵 API Document
 
 http://54.172.64.98:8080/docs/index.html
 
-# 시스템 아키텍쳐
+## 🔵 시스템 아키텍쳐
 ![img.png](img/img.png)
 
 
-# 시퀸스 다이어그램
+## 🔵 시퀸스 다이어그램
 
 ![img_1.png](img/img1.png)
 ![img_2.png](img/img2.png)
 ![img_3.png](img/img3.png)
 
-# 세부 기능 내용
+# 🔵 세부 기능 내용
 
 - **공유갤러리 기능 개발**
 
