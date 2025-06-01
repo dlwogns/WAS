@@ -6,15 +6,6 @@
 |기간|2025. 03 ~ 2025. 06|
 |수상||
 |참여 인원|3명(iOS 개발 1명 + BE 1명 + AI/Embeded 1명)|
-|기술 스택|
-Oracle OpenJDK 17, Spring Boot 3.4.4
-
-Redis(for Queue), Mosquitto, AWS SDK, RDS for MySQL
-
-IntelliJ, DataGrip, Postman, RestDocs
-
-Github for Version Control (Issue & PR)|
-|아키텍처|MVC, Server-Client-Device|
 
 ## 🔵 기획 의도
 - SKT,LG,KT,NAVER 등 대기업에서 혼자 사는 노부모를 위해 자사 기기를 이용한 AI 서비스를 제공하고 있습니다.
